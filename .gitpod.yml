@@ -5,13 +5,15 @@ image:
   file: .gitpod.Dockerfile
 
 tasks:
-  - name: Server set-up
-    init: psql -U "allan.aswani" -d postgres -a -f postgres_db.txt
-    command: pg_start
+  - name: Database set-up
+    command: psql -U "allan.aswani" -d postgres -a -f postgres_db.txt
+  
+  - name: Install pip packages
+    command: pip3 install -r requirements.txt
   
   - name: Start Server
-    init: pip3 install -r requirements.txt
     command: python manage.py runserver
+    openMode: split-right
 
 ports:
   - port: 8000
