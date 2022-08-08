@@ -6,10 +6,7 @@ image:
 
 tasks:
   - name: Django Backend Server
-    before: source venv/bin/activate
     init: >
-      python3 -m venv venv &&
-      source venv/bin/activate &&
       python3 -m pip install -r requirements.txt &&
       psql -U "allan.aswani" -d postgres -a -f postgres_db.txt &&
       python3 manage.py migrate
