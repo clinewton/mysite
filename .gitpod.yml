@@ -7,13 +7,15 @@ image:
 tasks:
   - name: Django Backend Server
     init: >
-      python3 -m pip install -r requirements.txt &&
-      psql -U "allan.aswani" -d postgres -a -f postgres_db.txt &&
-      python3 manage.py migrate
+      pip install -r requirements.txt &&
+      psql -h localhost -p 5432 -U gitpod -f postgtres_db.txt &&
+      python manage.py migrate
     command: >
-      python3 manage.py runserver 0.0.0.0:9000
+      python manage.py runserver 0.0.0.0:9000
 
 ports:
   - port: 9000
     visibility: private
     onOpen: open-browser
+  - port: 5432
+    onOpen: ignore

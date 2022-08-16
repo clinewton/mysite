@@ -33,7 +33,7 @@ comment on column customers.status is 'Active or Dormant';
 comment on column customers.segment is 'Mass ,SMES and Corporate';
 
 alter table customers
-    owner to "allan.aswani";
+    owner to "gitpod";
 
 
 
@@ -70,7 +70,7 @@ create table accounts
 );
 
 alter table accounts
-    owner to "allan.aswani";
+    owner to "gitpod";
     -----------------------------
 
 create table transaction_diary
@@ -116,7 +116,7 @@ create table transaction_diary
 );
 
 alter table transaction_diary
-    owner to "allan.aswani";
+    owner to "gitpod";
 
     -----------------------------------------
 create table accounts_history
@@ -150,7 +150,7 @@ create table accounts_history
 );
 
 alter table accounts_history
-    owner to "allan.aswani";
+    owner to "gitpod";
 
 ----------------------------------------------------------------------------------------------------
 create table revenue
@@ -175,7 +175,7 @@ create table revenue
 );
 
 alter table revenue
-    owner to "allan.aswani";
+    owner to "gitpod";
 
 create unique index revenue_id_uindex
     on revenue (id);
@@ -222,7 +222,7 @@ create table mobile_loan_disbusements
 );
 
 alter table mobile_loan_disbusements
-    owner to "allan.aswani";
+    owner to "gitpod";
 
 create unique index mobile_loan_disbusements_id_uindex
     on mobile_loan_disbusements (id);
