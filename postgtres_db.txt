@@ -1,0 +1,1829 @@
+-- auto-generated definition
+create table customers
+(
+    id                  bigserial                not null
+        constraint customers_pkey
+            primary key,
+    cust_id             bigint                   not null,
+    firstname           varchar(100)             not null,
+    middlename          varchar(50),
+    lastname            varchar(100)             not null,
+    dob                 timestamp with time zone not null,
+    email               varchar(100),
+    gender              varchar(100)             not null,
+    national_id         varchar(100)             not null,
+    phone_number        varchar(100),
+    other_phone_numbers varchar(100),
+    open_date           timestamp with time zone not null,
+    last_updated_date   timestamp with time zone,
+    branch              varchar(100),
+    type                varchar(100),
+    status              varchar(100),
+    segment             varchar(100),
+    date_created        timestamp default CURRENT_TIMESTAMP
+);
+
+comment on table customers is 'Customer master table -Holds customer bio data
+';
+
+comment on column customers.type is 'joint account,Corporate ';
+
+comment on column customers.status is 'Active or Dormant';
+
+comment on column customers.segment is 'Mass ,SMES and Corporate';
+
+alter table customers
+    owner to "allan.aswani";
+
+
+
+-- auto-generated definition
+create table accounts
+(
+    id                     bigserial    not null
+        constraint accounts_pkey
+            primary key,
+    cust_id                bigint       not null,
+    account_no             varchar(100) not null,
+    account_name           varchar(100) not null,
+    currency               varchar(100) not null,
+    type                   varchar(100) not null,
+    current_balance        double precision,
+    open_date              timestamp    not null,
+    close_date             timestamp,
+    expiry_date            timestamp,
+    opening_branch         varchar(100) not null,
+    opened_by              varchar(100),
+    current_branch         varchar(100),
+    changed_by             varchar(100),
+    interest_rate          double precision,
+    account_status         varchar(100),
+    is_transacting_account boolean      not null,
+    last_transaction_date  timestamp,
+    product_type           varchar(100) not null,
+    interest               double precision,
+    interest_start_date    timestamp,
+    interest_end_date      timestamp,
+    eom_date               timestamp,
+    date_created           timestamp default CURRENT_TIMESTAMP,
+    account_type           integer
+);
+
+alter table accounts
+    owner to "allan.aswani";
+    -----------------------------
+
+create table transaction_diary
+(
+    id                  serial not null
+        constraint transactional_diary_attempt_1_pk
+            primary key,
+    tmstamp             timestamp,
+    trx_date            timestamp,
+    trx_unit            integer,
+    trx_usr             varchar(200),
+    trx_usr_sn          integer,
+    tun_internal_sn     integer,
+    transaction_ref     varchar(1000),
+    product_description varchar(300),
+    account_number      varchar(50),
+    id_product          integer,
+    fk_customercust_id  integer,
+    national_id         varchar(50),
+    mobile_tel          varchar(50),
+    account_name        varchar(1000),
+    i_id_justific       integer,
+    justific_name       varchar(1000),
+    trx_code            integer,
+    trx_name            varchar(1000),
+    cash_debit          double precision,
+    cash_credit         double precision,
+    journal_debit       double precision,
+    jornal_credit       double precision,
+    commission          double precision,
+    expense_amount      double precision,
+    tax_amount          double precision,
+    total_charge        double precision,
+    trx_comments        varchar(10000),
+    value_date          timestamp,
+    currency_id         integer,
+    currency            varchar(1000),
+    reverse_flag        varchar(1000),
+    reversed_trx_flag   varchar(1000),
+    channel_id          integer,
+    chanel_description  varchar(1000),
+    datecreated         timestamp default CURRENT_TIMESTAMP
+);
+
+alter table transaction_diary
+    owner to "allan.aswani";
+
+    -----------------------------------------
+create table accounts_history
+(
+    id                     bigserial    not null
+        constraint accounts_history_pkey
+            primary key,
+    cust_id                bigint       not null,
+    account_no             varchar(100) not null,
+    account_name           varchar(100) not null,
+    currency               varchar(100) not null,
+    type                   varchar(100) not null,
+    current_balance        double precision,
+    open_date              timestamp    not null,
+    close_date             timestamp,
+    expiry_date            timestamp,
+    opening_branch         varchar(100) not null,
+    opened_by              varchar(100),
+    current_branch         varchar(100),
+    changed_by             varchar(100),
+    interest_rate          double precision,
+    account_status         varchar(100),
+    is_transacting_account boolean      not null,
+    last_transaction_date  timestamp,
+    product_type           varchar(100) not null,
+    interest               double precision,
+    interest_start_date    timestamp,
+    interest_end_date      timestamp,
+    eom_date               timestamp,
+    date_created           timestamp default CURRENT_TIMESTAMP
+);
+
+alter table accounts_history
+    owner to "allan.aswani";
+
+----------------------------------------------------------------------------------------------------
+create table revenue
+(
+    id              serial not null
+        constraint revenue_pk
+            primary key,
+    cust_id         bigint,
+    prod_code       bigint,
+    brn_code        bigint,
+    gl_account      text,
+    trx_unit        bigint,
+    txn_narration   text,
+    trx_date        timestamp,
+    tmstamp         timestamp,
+    trx_ref         text,
+    justific_desc   text,
+    cust_branch     bigint,
+    sum_dc          double precision,
+    income_category text,
+    datecreated     timestamp default CURRENT_TIMESTAMP
+);
+
+alter table revenue
+    owner to "allan.aswani";
+
+create unique index revenue_id_uindex
+    on revenue (id);
+----------------------------------------------------------------------------------------------------
+create table mobile_loan_disbusements
+(
+    id                  bigserial not null
+        constraint mobile_loan_disbusements_pk
+            primary key,
+    cust_id             bigint,
+    loan_account        varchar(40),
+    tmstamp             timestamp,
+    loans_program_id    integer,
+    program_currency    integer,
+    mobile_tel          varchar(20),
+    loan_cd             integer,
+    agreement_account   varchar(50),
+    agreement_cd        integer,
+    deposit_account     varchar(50),
+    deposit_cd          integer,
+    c_digit             integer,
+    instant_loan_amount double precision,
+    install_freq        integer,
+    install_count       integer,
+    acc_open_dt         timestamp,
+    acc_exp_dt          timestamp,
+    trx_user            varchar(20),
+    bankemployee        varchar(50),
+    allocation_type     varchar(10),
+    collateral_sn       varchar(50),
+    application_id      varchar(20),
+    loan_capital        double precision,
+    loan_interest       double precision,
+    loan_expences       double precision,
+    loan_commission     double precision,
+    deposit_amount      double precision,
+    trx_comments        varchar(20),
+    sex                 varchar(5),
+    id_no               varchar(20),
+    date_closed         timestamp,
+    cust_name           varchar(300),
+    age                 varchar(50),
+    datetime            timestamp default CURRENT_TIMESTAMP
+);
+
+alter table mobile_loan_disbusements
+    owner to "allan.aswani";
+
+create unique index mobile_loan_disbusements_id_uindex
+    on mobile_loan_disbusements (id);
+---------------------------------------------------------------------
+create table empoyee_dmc_data
+(
+    id              serial not null
+        constraint empoyee_dmc_data_pk
+            primary key,
+    staff_pf_number integer,
+    sales_code      text,
+    staff_name      text,
+    staff_unit      text,
+    staff_role      text,
+    staff_branch    text,
+    "brn_ code"     integer,
+    updated_at      timestamp default CURRENT_TIMESTAMP
+);
+
+---------------------------------------------------------------------------
+
+###########################################materialized views rectified#############################
+--
+--
+--
+-- select ms.score_card, ms.updated, count(*)
+-- from manual_scoring ms
+-- group by ms.score_card, ms.updated order by ms.updated desc
+--
+--
+--
+-- select *
+-- from manual_scoring ms
+-- where phone_number = '254722996081'
+--
+--
+-- select * from transaction_diary  where account_number = '9783744903'
+--
+--
+-- select * from manual_scoring ms where phone_number like '%721376468%' ----%07
+--
+-- select * from manual_scoring where national_id = '32927009'
+--
+--
+--
+--
+-- select * from portfolio_rm_deposit_trends where sales_code in('AL3116')
+--
+--
+--
+--
+--         p_conn=psql.connect(dbname=app.DATABASES['default']['NAME'],user=app.DATABASES['default']['USER'],password=app.DATABASES['default']['PASSWORD'],host=app.DATABASES['default']['HOST'],port=app.DATABASES['default']['PORT'])
+--         focus_chart = pd.read_sql_query(focus_chart , p_conn)
+--         focus_chart
+
+--
+-- WITH end_month_dates AS
+-- (
+--          SELECT   Date_trunc('month', eom_date)::         DATE,
+--                   Max(eom_date)::                 DATE AS max_month_eod
+--          FROM     accounts
+--          WHERE    eom_date >= Date_trunc('month', current_date )
+--          GROUP BY Date_trunc('month', eom_date) ) , daily_balance AS
+-- (
+--        SELECT 1 id, count(distinct(product_type))
+--        FROM   accounts
+--        WHERE  1=1  -------and cust_id=%s
+--        AND    eom_date::DATE IN
+--               (
+--                      SELECT max_month_eod
+--                      FROM   end_month_dates ))
+--                   select * from daily_balance
+
+
+-- select * from accounts
+
+-- CREATE UNIQUE INDEX ON ceo_deposit_movement_daily (id);
+
+-- drop MATERIALIZED VIEW ceo_deposit_movement
+
+--------------ceo_deposit_movement
+CREATE MATERIALIZED VIEW ceo_deposit_movement
+as
+  with daily_balance as (select
+            case when segment
+                    in ('LARGE ENTERPRISES','MEDIUM ENTERPRISES','SMALL ENTERPRISES') then 'SME'
+            when segment
+                    in ('MASS','PRIVATE','STANDARD','VIRTUAL') then 'PB'
+            when segment
+                    in ('INSTITUTIONAL BANKING') then 'IB'
+            when segment
+                    in ('SCHEME') then 'SCHEME'
+            when segment
+                    in ('FINANCIAL INSTITUTIONS') then 'FI'
+            else 'Other'
+            end as banking_segment,
+            segment,
+            eom_date::date as dates,
+    count(ah.account_no::double precision) as volume,
+    sum(current_balance) as value
+    from accounts_history ah
+            left join customers c on ah.cust_id = c.cust_id
+            where 1=1
+            and eom_date::date in ((select max(eom_date)::date from accounts_history), (date_trunc('year', now()) - INTERVAL '1 day')::timestamp::date)
+            and segment != 'internal'
+            group by
+            case when segment
+                            in ('LARGE ENTERPRISES','MEDIUM ENTERPRISES','SMALL ENTERPRISES') then 'SME'
+                    when segment
+                            in ('MASS','PRIVATE','STANDARD','VIRTUAL') then 'PB'
+                    when segment
+                            in ('INSTITUTIONAL BANKING') then 'IB'
+                    when segment
+                            in ('SCHEME') then 'SCHEME'
+                    when segment
+                            in ('FINANCIAL INSTITUTIONS') then 'FI'
+                    else 'Other'
+                    end,
+                    segment,
+                    eom_date::date)
+    select banking_segment,
+            segment,
+            sum(case when dates::date = (date_trunc('year', now()) - INTERVAL '1 day')::timestamp::date then value WHEN dates::date = (date_trunc('year', now()) - INTERVAL '2 day')::timestamp::date THEN VALUE end) as end_previous_year_bal,
+            sum(case when dates::date >= date_trunc('year', now())::timestamp::date then value end) as current_bal,
+            100*((sum(case when dates::date >= date_trunc('year', now())::timestamp::date then value end)-sum(case when dates::date <= (date_trunc('year', now()) - INTERVAL '1 day')::timestamp::date then value end))/sum(case when dates::date <= (date_trunc('year', now()) - INTERVAL '1 day')::timestamp::date then value end))::double precision   as percentage_movement
+    from daily_balance
+    group by banking_segment,segment;
+
+select * from ceo_deposit_movement
+
+
+
+CREATE UNIQUE INDEX ON ceo_deposit_movement (
+   banking_segment,
+   segment,
+   end_previous_year_bal,
+   current_bal,
+   percentage_movement                            );
+
+
+REFRESH MATERIALIZED VIEW CONCURRENTLY ceo_deposit_movement;
+-- CREATE OR REPLACE FUNCTION refresh_ceo_deposit_movement()
+--   RETURNS TRIGGER LANGUAGE plpgsql
+--   AS $$
+--   BEGIN
+--   REFRESH MATERIALIZED VIEW CONCURRENTLY ceo_deposit_movement;
+--   RETURN NULL;
+--   END $$;
+
+-- drop TRIGGER ceo_deposit_movement_trigger on accounts_history;
+--
+-- CREATE TRIGGER ceo_deposit_movement_trigger
+--   AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
+--   ON accounts_history
+--   FOR EACH STATEMENT
+--   EXECUTE PROCEDURE refresh_ceo_deposit_movement();
+
+
+-- drop TRIGGER ceo_deposit_movement_trigger on customers;
+--
+--   CREATE TRIGGER ceo_deposit_movement_trigger
+--   AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
+--   ON customers
+--   FOR EACH STATEMENT
+--   EXECUTE PROCEDURE refresh_ceo_deposit_movement();
+
+
+
+---------------ceo_deposit_movement_monthly
+
+-- drop MATERIALIZED VIEW ceo_deposit_movement_monthly
+
+CREATE MATERIALIZED VIEW ceo_deposit_movement_monthly
+as
+  with end_month_dates as
+        (
+        SELECT
+            date_trunc('month', eom_date)::date,
+            max(eom_date)::date as max_month_eod
+        FROM
+            accounts_history
+        WHERE
+            eom_date >= date_trunc('month', CURRENT_DATE - '12 months'::interval)
+            and eom_date >= '2021-01-01'
+        GROUP BY
+            date_trunc('month', eom_date)
+        )
+        ,
+        daily_balance as
+        (
+        select
+        ah.product_type,
+        ah.account_no,
+                c.segment,
+                upper(replace(trim(edd.sales_code), ' ', '')) as sales_code,
+                edd.staff_role,
+                date_trunc('months', eom_date) as dates_eom,
+                count(ah.account_no::double precision) as volume,
+                sum(current_balance) as value
+        from
+            accounts_history ah left join customers c on ah.cust_id = c.cust_id
+            left join
+                empoyee_dmc_data edd
+                on upper(replace(trim(ah.opened_by), ' ', '')) = upper(replace(trim(edd.sales_code), ' ', ''))
+        where
+            1 = 1
+            and eom_date::date in
+            (
+                select
+                    max_month_eod
+                from
+                    end_month_dates
+            )
+        and c.segment not in ('INTERNAL ACCOUNTS')
+        group by
+            ah.product_type,
+            ah.account_no,
+                    c.segment,
+                    upper(replace(trim(edd.sales_code), ' ', '')),
+                    edd.staff_role, date_trunc('months', eom_date)
+        )
+        select
+        dates_eom::date,
+        sum(value)
+        from
+        daily_balance
+        group by dates_eom::date
+        order by dates_eom::date asc;
+
+
+
+select * from ceo_deposit_movement_monthly
+
+
+CREATE UNIQUE INDEX ON ceo_deposit_movement_monthly (
+   dates_eom,
+   sum                           );
+
+
+REFRESH MATERIALIZED VIEW CONCURRENTLY ceo_deposit_movement_monthly;
+
+
+-- CREATE OR REPLACE FUNCTION refresh_ceo_deposit_movement_monthly()
+--   RETURNS TRIGGER LANGUAGE plpgsql
+--   AS $$
+--   BEGIN
+--   REFRESH MATERIALIZED VIEW CONCURRENTLY ceo_deposit_movement_monthly;
+--   RETURN NULL;
+--   END $$;
+--
+--
+-- drop  TRIGGER ceo_deposit_movement_monthly_trigger on accounts_history
+--
+-- CREATE TRIGGER ceo_deposit_movement_monthly_trigger
+--   AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
+--   ON accounts_history
+--   FOR EACH STATEMENT
+--   EXECUTE PROCEDURE refresh_ceo_deposit_movement_monthly();
+--
+--
+-- drop  TRIGGER ceo_deposit_movement_monthly_trigger on customers
+--
+--   CREATE TRIGGER ceo_deposit_movement_monthly_trigger
+--   AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
+--   ON customers
+--   FOR EACH STATEMENT
+--   EXECUTE PROCEDURE refresh_ceo_deposit_movement_monthly();
+--
+--
+-- drop  TRIGGER ceo_deposit_movement_monthly_trigger on empoyee_dmc_data
+--
+--   CREATE TRIGGER ceo_deposit_movement_monthly_trigger
+--   AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
+--   ON empoyee_dmc_data
+--   FOR EACH STATEMENT
+--   EXECUTE PROCEDURE refresh_ceo_deposit_movement_monthly();
+--
+
+-------deposit movement daily
+
+-- drop MATERIALIZED VIEW ceo_deposit_movement_daily
+
+CREATE MATERIALIZED VIEW ceo_deposit_movement_daily
+as
+  with end_month_dates as
+        (
+        SELECT
+            date_trunc('days', eom_date)::date,
+            max(eom_date)::date as max_month_eod
+        FROM
+            accounts_history
+        WHERE
+            eom_date >= date_trunc('days', CURRENT_DATE - '7 days'::interval)
+            and eom_date >= '2021-01-01'
+        GROUP BY
+            date_trunc('days', eom_date)
+        )
+        ,
+        daily_balance as
+        (
+        select
+        ah.product_type,
+        ah.account_no,
+                c.segment,
+                date_trunc('days', eom_date) as dates_eom,
+                count(ah.account_no::double precision) as volume,
+                sum(current_balance) as value
+        from
+            accounts_history ah
+                left join customers c on ah.cust_id = c.cust_id
+        where
+            1 = 1
+            and eom_date::date in
+            (
+                select
+                    max_month_eod
+                from
+                    end_month_dates
+            )
+        and c.segment not in ('INTERNAL ACCOUNTS')
+        group by
+            ah.product_type,
+        ah.account_no,
+                c.segment,
+                date_trunc('days', eom_date)
+        )
+        select
+        dates_eom::date,
+        sum(value)
+        from
+        daily_balance
+        group by dates_eom::date
+        order by dates_eom::date asc;
+
+select * from ceo_deposit_movement_daily
+
+
+
+
+CREATE UNIQUE INDEX ON ceo_deposit_movement_daily (
+   dates_eom,
+   sum                           );
+
+
+REFRESH MATERIALIZED VIEW CONCURRENTLY ceo_deposit_movement_daily;
+
+-- CREATE OR REPLACE FUNCTION refresh_ceo_deposit_movement_daily()
+--   RETURNS TRIGGER LANGUAGE plpgsql
+--   AS $$
+--   BEGIN
+--   REFRESH MATERIALIZED VIEW CONCURRENTLY ceo_deposit_movement_daily;
+--   RETURN NULL;
+--   END $$;
+--
+--
+-- drop TRIGGER ceo_deposit_movement_daily_trigger on accounts_history
+--
+-- CREATE TRIGGER ceo_deposit_movement_daily_trigger
+--   AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
+--   ON accounts_history
+--   FOR EACH STATEMENT
+--   EXECUTE PROCEDURE refresh_ceo_deposit_movement_daily();
+--
+-- drop TRIGGER ceo_deposit_movement_daily_trigger on customers
+--
+--   CREATE TRIGGER ceo_deposit_movement_daily_trigger
+--   AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
+--   ON customers
+--   FOR EACH STATEMENT
+--   EXECUTE PROCEDURE refresh_ceo_deposit_movement_daily();
+--
+--
+
+
+-------ceo_channel_report
+
+-- drop MATERIALIZED VIEW ceo_channel_report
+
+CREATE MATERIALIZED VIEW ceo_channel_report
+as
+  with revenue as (select 1 id,
+    c.cust_id,
+    t.id_product,
+    trx_unit,
+    product_description,
+    date_trunc('months', tmstamp) as trx_date,
+    case
+        when
+            justific_name in
+            (
+                'CASH DEPOSIT FROM ATM',
+                'ATM WITHDRAWAL (HF TERMINAL)',
+                'ATM CARD FEES',
+                'ATM WITHDRAWAL ONUS KENSWITCH',
+                'ATM WITHDR OFFUS KENSWITCH',
+                'ATM WITHDR OFFUS MASTERCARD',
+                'ATM CASH DEPOSIT'
+            )
+        then
+            'ATM'
+        when
+            justific_name in
+            (
+                '0', 'CHEQUE DEPOSIT OF OTHER BANK (ELEC.CLER)', 'IN HOUSE CHEQUES', 'DEPOSIT CASH', 'CASH WITHDRAWAL', 'CHEQUE PAYMENT FROM CARNET', 'ORDINARY CLEARING CHEQUE', 'CHEQUE BOOK CHARGE 50 PAGES', 'CHEQUE BOOK CHARGE 100 PAGES', 'Piggy Bank Replacement', 'Confirmation To Embassies', 'Audit Confirmation', 'Bank Reference/Opinion', 'CHEQUE DEPOSIT OF OTHER BANK FC', 'OTC CASH WITHDRAWAL', 'ACCOUNT CLOSING AFTER 6 MONTHS', 'INTERIM STATEMENT PER PG', 'CERTIFICATION OF STMT PER PG', 'COUNTER CHEQUE WITHDRAWAL', 'DUPLICATE STATEMENT PER PG', 'CHEQUE STOP PAYMENT', 'BANK DRAFT ISSUED', 'RTGS -PAYMENT', 'TELEGRAPHIC TRANSFER', 'CONTRACT FINANCING', 'SECURED OVERDRAFTS (SOD)', 'NORMAL INSPECTION FEES-PROJECTS', 'BANK DRAFT ISSUED /NON ACC.HOLDER', 'BANK DRAFT ISSUED /ACC. HOLDER', 'BANK DRAFT ISSUED /STAFF', 'BILL COMMISSION', 'REACTIVATION ACCOUNT CHARGES (DORMANT)', 'STANDING ORDER DEACTIVATION FEE', 'CASH WITHDRAWAL LENGO FOR CLOSING', 'A/C CLOSURE-JOURNAL TRANSFER WITH COMM', 'retrieval of documents -vouchers', 'Duplicate Statement (before Bankplus)', 'DOMESTIC FCY CHEQUES VALUE 7days', 'Effects not cleared (withdr from unclear', 'Retrieval of documents Archives', 'STAGE INSPECTION FEES-RETAIL', 'CLOSED AC BELOW 5Y PER PG'
+            )
+        THEN
+            'BRANCH'
+        when
+            justific_name in
+            (
+                'DEBIT FROM MOBILE BANKING', 'CREDIT FROM MOBILE BANKING', 'CR FROM MOBILE BANKING-MPESA TO ACC', 'BUY GOOD( MOBILE APP)', 'PAY BILL(ACCOUNT TO MPESA PAYBILL)', 'AIRTIME PURCHASE( MOBILE APP)', 'ACCOUNT TO MPESA(B2C)', 'UTILITY BILL PAYMENT(APP)', 'CR UTILITY BILLPAYMENT(APP)', 'CR AIRTIME PURCHASE(APP)', 'CR PAYBILL(ACCOUNT TO MPESA PAYBILL)', 'CR BUY GOODS (APP)', 'MOBILE APP DEPOSIT', 'MPESA CR WHIZZPAY', 'MPESA DR WHIZZPAY', 'DEPOSIT THROUGH TILL', 'DR THROUGH TILL'
+            )
+        THEN
+            'DIGITAL'
+        when
+            justific_name in
+            (
+                '0', 'REJECTION INCOM.CHEQUES NO COMMIS', 'UNPAID CHEQUE OUR BANK', 'COMMISSION ON UNPAID CHEQUE', 'EXPENSE FOR OVERDUE COLLATERAL', 'CLOSURE ZERO BALANCE', 'JOURNAL CREDIT', 'JC-CREDIT TO ACCOUNT', 'SALARY PAYMENT', 'JOURNAL DEBIT', 'JD-TRANSFER TO ACCOUNT', 'CUSTOMER ACCOUNT DEBIT', 'STANDING ORDER PAYMENT', 'INCOMING INTERPAYMENT ORDERS CHARGES ', 'TRADE FINANCE EXPENSE JOURNAL DEBIT', 'FIRST DEMAND INTEREST CALCULATION UPDATE', 'DEBIT INTEREST', 'INTEREST PAYMENT ', 'PRINCIPAL PAYMENT ', 'Search Fees', 'Interim Statement- e-mail', 'WITHDRAW FROM UNCLEAR BALANCE', 'ACCOUNT MAINTENANCE', 'SALARY POSTINGS WITH COMMISSION', 'STANDING ORDER FINALIS. FEES', 'FX LOAN MULTI PAYMENTS', 'STANDING ORDER UNSUCCES.FEES', 'INSURANCE DEBIT', 'INTERNATIONAL FCY CHEQUESVALUE 30days', 'STAFF IMPREST', 'STAFF IMPREST JC', 'PETTY CASH JC', 'INTEREST POSTING', 'VENDOR PAYMENT-JC', 'SALARY POSTINGS COMMISSION 50 KSH', 'SALARY POSTINGS COMMISSION 100 KSH', 'PENALTY ON CHEQUE TRANSACTIONS ABOVE 10', 'SALARY POSTINGS RETURN REJECTED AMOUNTS', 'Processing Fee  ', 'ONLINE STATEMENT CHARGE PER PAGE', 'BATCH STATEMENT FEE CHARGING - LOANS', 'COMMITTMENT FEE MORTGAGE FINANCE', 'LOAN STATEMENT FEE', 'LOAN DRAWDOWN', 'COMMISSION WITH TAX', 'CLOSURE ZERO BALANCE REVERSED ACCRUALS', 'CHATTELS MORTGAGE FEES', 'PERSONAL BANKING COMMITTMENT FEES', 'BUSINESS BANKING COMMITMENT FEES', 'ECOMMERCE/ONLINE TRANSACTION', 'INCOMING RTGS CR', 'INCOMING RTGS DB', 'Postage fee- Local', 'Revenue Stamp', 'VENDOR PAYMENT-JD', 'UNDERTAKING FEE REDEMPTION', 'BALANCE INQUIRY EXT CHANNEL CHARGES', 'MINI STMNT EXT CHANNEL CHARGES', 'PETTY CASH JD', 'BATCH STATEMENT CHARGE/PAGE-EMAIL', 'ACCOUNT CLOSING BEFORE 6 MONTHS', 'MICRO BANKING COMMITTMENT FEE', 'COMMIS. OF INCOM.CHEQUES INSUF.BAL.'
+            )
+        THEN
+            'SYSTEM'
+        else
+            'others'
+    end
+    as trx_channel,
+    case
+        when
+            justific_name in
+            (
+                'DEPOSIT THROUGH TILL', 'DR THROUGH TILL'
+            )
+        THEN
+            'SME'
+        when
+            c.segment in
+            (
+                'MASS', 'STANDARD', 'PRIVATE', 'VIRTUAL'
+            )
+        THEN
+            'PERSONAL BANKING'
+        when
+            c.segment in
+            (
+                'MEDIUM ENTERPRISES', 'SMALL ENTERPRISES', 'LARGE ENTERPRISES'
+            )
+        THEN
+            'SME'
+        when
+            c.segment in
+            (
+                'PROJECT FINANCE'
+            )
+        THEN
+            'PROJECT FINANCE'
+        when
+            c.segment in
+            (
+                'INTERNAL ACCOUNTS'
+            )
+        THEN
+            'INTERNAL ACCOUNTS'
+        when
+            c.segment in
+            (
+                'INSTITUTIONAL BANKING'
+            )
+        THEN
+            'INSTITUTIONAL BANKING'
+        ELSE
+            'PERSONAL BANKING'
+    END
+    as banking_segment, justific_name, count(distinct transaction_ref) as trx_count, sum(t.journal_debit + t.jornal_credit) as trx_sum, count(distinct transaction_ref) FILTER (
+    WHERE
+    commission > 0) count_billed, sum(
+    case
+        when
+            commission > 0
+        then
+    (commission)
+        else
+            0
+    end
+    ) as revenues
+    from
+    customers c
+    left join
+        transaction_diary t
+        on t.fk_customercust_id = c.cust_id
+    where
+    1 = 1
+    AND t.tmstamp::timestamp::date >= '2021-01-01'::timestamp::date
+    AND chanel_description is not null
+    AND value_date is not null
+    AND account_number is not null
+    AND product_description is not null
+    AND reversed_trx_flag = 'Posted'
+    and reverse_flag = 'Original'
+    AND justific_name in
+    (
+        'A/C CLOSURE-JOURNAL TRANSFER WITH COMM', 'ACCOUNT CLOSING AFTER 6 MONTHS', 'ACCOUNT CLOSING BEFORE 6 MONTHS', 'ACCOUNT MAINTENANCE', 'ACCOUNT TO MPESA(B2C)', 'AIRTIME PURCHASE( MOBILE APP)', 'ATM CARD FEES', 'ATM WITHDRAWAL (HF TERMINAL)', 'ATM WITHDRAWAL ONUS KENSWITCH', 'ATM WITHDR OFFUS KENSWITCH', 'ATM WITHDR OFFUS MASTERCARD', 'BALANCE INQUIRY EXT CHANNEL CHARGES', 'BATCH STATEMENT CHARGE/PAGE-EMAIL', 'BILL COMMISSION', 'BUY GOOD( MOBILE APP)', 'CASH WITHDRAWAL', 'CHEQUE BOOK CHARGE 100 PAGES', 'CHEQUE BOOK CHARGE 50 PAGES', 'CLOSED AC BELOW 5Y PER PG', 'COUNTER CHEQUE WITHDRAWAL', 'CR FROM MOBILE BANKING-MPESA TO ACC', 'DEBT COLLECTION COMMISSION', 'DEPOSIT CASH', 'Effects not cleared (withdr from unclear', 'EXPENSE FOR OVERDUE COLLATERAL', 'Interim Statement- e-mail', 'INTERIM STATEMENT PER PG', 'LOAN AUCTIONEERS FEE', 'LOAN LEGAL FEE', 'LOAN STATEMENT FEE', 'MANAGEMENT COMMISSION', 'MESSAGING AND ALERTING CHARGES', 'MINI STMNT EXT CHANNEL CHARGES', 'MOBILE PENALTY FEES', 'MOBILE ROLL OVER FEES', 'ONLINE STATEMENT CHARGE PER PAGE', 'OTC CASH WITHDRAWAL', 'PAY BILL(ACCOUNT TO MPESA PAYBILL)', 'REACTIVATION ACCOUNT CHARGES (DORMANT)', 'REJECTION INCOM.CHEQUES NO COMMIS', 'Retrieval of documents Archives', 'Revenue Stamp', 'SALARY POSTINGS COMMISSION 100 KSH', 'SALARY POSTINGS COMMISSION 50 KSH', 'SALARY POSTINGS WITH COMMISSION', 'SDB - JOURNAL CREDIT - EXPENSE', 'SDB RENTAL RENEWAL CASH', 'Standing Order Payment', 'UTILITY BILL PAYMENT(APP)', 'VALUATION FEES', 'WITHDRAW FROM UNCLEAR BALANCE', 'DEPOSIT THROUGH TILL', 'DR THROUGH TILL'
+    )
+    group by
+    case
+        when
+            justific_name in
+            (
+                'CASH DEPOSIT FROM ATM', 'ATM WITHDRAWAL (HF TERMINAL)', 'ATM CARD FEES', 'ATM WITHDRAWAL ONUS KENSWITCH', 'ATM WITHDR OFFUS KENSWITCH', 'ATM WITHDR OFFUS MASTERCARD', 'ATM CASH DEPOSIT'
+            )
+        then
+            'ATM'
+        when
+            justific_name in
+            (
+                '0', 'CHEQUE DEPOSIT OF OTHER BANK (ELEC.CLER)', 'IN HOUSE CHEQUES', 'DEPOSIT CASH', 'CASH WITHDRAWAL', 'CHEQUE PAYMENT FROM CARNET', 'ORDINARY CLEARING CHEQUE', 'CHEQUE BOOK CHARGE 50 PAGES', 'CHEQUE BOOK CHARGE 100 PAGES', 'Piggy Bank Replacement', 'Confirmation To Embassies', 'Audit Confirmation', 'Bank Reference/Opinion', 'CHEQUE DEPOSIT OF OTHER BANK FC', 'OTC CASH WITHDRAWAL', 'ACCOUNT CLOSING AFTER 6 MONTHS', 'INTERIM STATEMENT PER PG', 'CERTIFICATION OF STMT PER PG', 'COUNTER CHEQUE WITHDRAWAL', 'DUPLICATE STATEMENT PER PG', 'CHEQUE STOP PAYMENT', 'BANK DRAFT ISSUED', 'RTGS -PAYMENT', 'TELEGRAPHIC TRANSFER', 'CONTRACT FINANCING', 'SECURED OVERDRAFTS (SOD)', 'NORMAL INSPECTION FEES-PROJECTS', 'BANK DRAFT ISSUED /NON ACC.HOLDER', 'BANK DRAFT ISSUED /ACC. HOLDER', 'BANK DRAFT ISSUED /STAFF', 'BILL COMMISSION', 'REACTIVATION ACCOUNT CHARGES (DORMANT)', 'STANDING ORDER DEACTIVATION FEE', 'CASH WITHDRAWAL LENGO FOR CLOSING', 'A/C CLOSURE-JOURNAL TRANSFER WITH COMM', 'retrieval of documents -vouchers', 'Duplicate Statement (before Bankplus)', 'DOMESTIC FCY CHEQUES VALUE 7days', 'Effects not cleared (withdr from unclear', 'Retrieval of documents Archives', 'STAGE INSPECTION FEES-RETAIL', 'CLOSED AC BELOW 5Y PER PG'
+            )
+        THEN
+            'BRANCH'
+        when
+            justific_name in
+            (
+                'DEBIT FROM MOBILE BANKING', 'CREDIT FROM MOBILE BANKING', 'CR FROM MOBILE BANKING-MPESA TO ACC', 'BUY GOOD( MOBILE APP)', 'PAY BILL(ACCOUNT TO MPESA PAYBILL)', 'AIRTIME PURCHASE( MOBILE APP)', 'ACCOUNT TO MPESA(B2C)', 'UTILITY BILL PAYMENT(APP)', 'CR UTILITY BILLPAYMENT(APP)', 'CR AIRTIME PURCHASE(APP)', 'CR PAYBILL(ACCOUNT TO MPESA PAYBILL)', 'CR BUY GOODS (APP)', 'MOBILE APP DEPOSIT', 'MPESA CR WHIZZPAY', 'MPESA DR WHIZZPAY', 'DEPOSIT THROUGH TILL', 'DR THROUGH TILL'
+            )
+        THEN
+            'DIGITAL'
+        when
+            justific_name in
+            (
+                '0', 'REJECTION INCOM.CHEQUES NO COMMIS', 'UNPAID CHEQUE OUR BANK', 'COMMISSION ON UNPAID CHEQUE', 'EXPENSE FOR OVERDUE COLLATERAL', 'CLOSURE ZERO BALANCE', 'JOURNAL CREDIT', 'JC-CREDIT TO ACCOUNT', 'SALARY PAYMENT', 'JOURNAL DEBIT', 'JD-TRANSFER TO ACCOUNT', 'CUSTOMER ACCOUNT DEBIT', 'STANDING ORDER PAYMENT', 'INCOMING INTERPAYMENT ORDERS CHARGES ', 'TRADE FINANCE EXPENSE JOURNAL DEBIT', 'FIRST DEMAND INTEREST CALCULATION UPDATE', 'DEBIT INTEREST', 'INTEREST PAYMENT ', 'PRINCIPAL PAYMENT ', 'Search Fees', 'Interim Statement- e-mail', 'WITHDRAW FROM UNCLEAR BALANCE', 'ACCOUNT MAINTENANCE', 'SALARY POSTINGS WITH COMMISSION', 'STANDING ORDER FINALIS. FEES', 'FX LOAN MULTI PAYMENTS', 'STANDING ORDER UNSUCCES.FEES', 'INSURANCE DEBIT', 'INTERNATIONAL FCY CHEQUESVALUE 30days', 'STAFF IMPREST', 'STAFF IMPREST JC', 'PETTY CASH JC', 'INTEREST POSTING', 'VENDOR PAYMENT-JC', 'SALARY POSTINGS COMMISSION 50 KSH', 'SALARY POSTINGS COMMISSION 100 KSH', 'PENALTY ON CHEQUE TRANSACTIONS ABOVE 10', 'SALARY POSTINGS RETURN REJECTED AMOUNTS', 'Processing Fee  ', 'ONLINE STATEMENT CHARGE PER PAGE', 'BATCH STATEMENT FEE CHARGING - LOANS', 'COMMITTMENT FEE MORTGAGE FINANCE', 'LOAN STATEMENT FEE', 'LOAN DRAWDOWN', 'COMMISSION WITH TAX', 'CLOSURE ZERO BALANCE REVERSED ACCRUALS', 'CHATTELS MORTGAGE FEES', 'PERSONAL BANKING COMMITTMENT FEES', 'BUSINESS BANKING COMMITMENT FEES', 'ECOMMERCE/ONLINE TRANSACTION', 'INCOMING RTGS CR', 'INCOMING RTGS DB', 'Postage fee- Local', 'Revenue Stamp', 'VENDOR PAYMENT-JD', 'UNDERTAKING FEE REDEMPTION', 'BALANCE INQUIRY EXT CHANNEL CHARGES', 'MINI STMNT EXT CHANNEL CHARGES', 'PETTY CASH JD', 'BATCH STATEMENT CHARGE/PAGE-EMAIL', 'ACCOUNT CLOSING BEFORE 6 MONTHS', 'MICRO BANKING COMMITTMENT FEE', 'COMMIS. OF INCOM.CHEQUES INSUF.BAL.'
+            )
+        THEN
+            'SYSTEM'
+        else
+            'others'
+    end
+    ,
+    case
+        when
+            justific_name in
+            (
+                'DEPOSIT THROUGH TILL', 'DR THROUGH TILL'
+            )
+        THEN
+            'SME'
+        when
+            c.segment in
+            (
+                'MASS', 'STANDARD', 'PRIVATE', 'VIRTUAL'
+            )
+        THEN
+            'PERSONAL BANKING'
+        when
+            c.segment in
+            (
+                'MEDIUM ENTERPRISES', 'SMALL ENTERPRISES', 'LARGE ENTERPRISES'
+            )
+        THEN
+            'SME'
+        when
+            c.segment in
+            (
+                'PROJECT FINANCE'
+            )
+        THEN
+            'PROJECT FINANCE'
+        when
+            c.segment in
+            (
+                'INTERNAL ACCOUNTS'
+            )
+        THEN
+            'INTERNAL ACCOUNTS'
+        when
+            c.segment in
+            (
+                'INSTITUTIONAL BANKING'
+            )
+        THEN
+            'INSTITUTIONAL BANKING'
+        ELSE
+            'PERSONAL BANKING'
+    END
+    , justific_name, product_description,trx_unit,c.cust_id,t.id_product,date_trunc('months', tmstamp))
+    select trx_date,
+      trx_channel,
+      count(distinct cust_id) as cust_id
+    from revenue
+    group by trx_date,
+      trx_channel;
+
+select * from ceo_channel_report
+
+
+
+
+CREATE UNIQUE INDEX ON ceo_channel_report (
+   trx_date,
+   trx_channel,
+   cust_id                                       );
+
+
+REFRESH MATERIALIZED VIEW CONCURRENTLY ceo_channel_report;
+
+-- CREATE OR REPLACE FUNCTION refresh_ceo_channel_report()
+--   RETURNS TRIGGER LANGUAGE plpgsql
+--   AS $$
+--   BEGIN
+--   REFRESH MATERIALIZED VIEW CONCURRENTLY ceo_channel_report;
+--   RETURN NULL;
+--   END $$;
+--
+--
+-- drop TRIGGER ceo_channel_report_trigger on transaction_diary
+--
+-- CREATE TRIGGER ceo_channel_report_trigger
+--   AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
+--   ON transaction_diary
+--   FOR EACH STATEMENT
+--   EXECUTE PROCEDURE refresh_ceo_channel_report();
+
+
+
+
+-----drop trigger if exists ceo_channel_report_trigger on customers ;
+
+-----------portfolio_rm_deposit_trends
+
+-- drop MATERIALIZED VIEW portfolio_rm_deposit_trends
+
+
+CREATE MATERIALIZED VIEW portfolio_rm_deposit_trends
+as
+WITH end_month_dates AS
+(
+         SELECT   Date_trunc('month', eom_date)::        DATE,
+                  Max(eom_date)::                DATE AS max_month_eod
+         FROM     accounts_history
+         WHERE    eom_date >= Date_trunc('month', current_date - '12 months'::interval)
+         AND      eom_date >= '2021-01-01'
+         GROUP BY Date_trunc('month', eom_date) ) , daily_balance AS
+(
+         SELECT
+                  ah.product_type,
+                  rap.sales_code,
+                  Date_trunc('months', eom_date)         AS dates_eom,
+                  count(ah.account_no::DOUBLE precision) AS volume,
+                  count(distinct ah.cust_id) as number_of_customers,
+                  SUM(current_balance)                   AS value
+         FROM     accounts_history ah
+         LEFT JOIN retail_allocated_portfolio rap on ah.cust_id = rap.cust_id
+         WHERE    1 = 1
+         AND      eom_date::DATE IN
+                  (
+                         SELECT max_month_eod
+                         FROM   end_month_dates )
+         GROUP BY ah.product_type,
+                  rap.sales_code,
+                  date_trunc('months', eom_date)
+         ORDER BY(date_trunc('months', eom_date)) )
+SELECT *
+FROM   daily_balance;
+
+
+
+
+
+select * from portfolio_rm_deposit_trends
+--
+CREATE UNIQUE INDEX ON portfolio_rm_deposit_trends (
+   product_type,
+   sales_code,
+    dates_eom,
+    volume,
+   number_of_customers,
+    value                                               );
+--
+--
+REFRESH MATERIALIZED VIEW CONCURRENTLY portfolio_rm_deposit_trends;
+
+-- CREATE OR REPLACE FUNCTION refresh_portfolio_rm_deposit_trends_report()
+--   RETURNS TRIGGER LANGUAGE plpgsql
+--   AS $$
+--   BEGIN
+--   REFRESH MATERIALIZED VIEW CONCURRENTLY portfolio_rm_deposit_trends;
+--   RETURN NULL;
+--   END $$;
+--
+--
+-- drop TRIGGER portfolio_rm_deposit_trends_trigger on accounts_history
+--
+-- CREATE TRIGGER portfolio_rm_deposit_trends_trigger
+--   AFTER INSERT OR UPDATE OR DELETE --------OR TRUNCATE
+--   ON accounts_history
+--   FOR EACH STATEMENT
+--   EXECUTE PROCEDURE refresh_portfolio_rm_deposit_trends_report();
+--
+--
+--
+-- drop TRIGGER portfolio_rm_deposit_trends_trigger on retail_allocated_portfolio
+--
+-- CREATE TRIGGER portfolio_rm_deposit_trends_trigger
+--   AFTER INSERT OR UPDATE OR DELETE ----------OR TRUNCATE
+--   ON retail_allocated_portfolio
+--   FOR EACH STATEMENT
+--   EXECUTE PROCEDURE refresh_portfolio_rm_deposit_trends_report();
+--
+--
+--
+
+
+-----------
+
+
+
+-----------portfolio_rm_deposit_trends
+
+-- drop MATERIALIZED VIEW portfolio_cust_deposit_trends
+
+
+CREATE MATERIALIZED VIEW portfolio_cust_deposit_trends
+as
+WITH end_month_dates AS
+(
+         SELECT   Date_trunc('month', eom_date)::        date,
+                  max(eom_date)::                date AS max_month_eod
+         FROM     accounts_history
+         WHERE    eom_date >= date_trunc('month', CURRENT_DATE - '12 months'::interval)
+         AND      eom_date >= '2021-01-01'
+         GROUP BY date_trunc('month', eom_date) ) , daily_balance AS
+(
+         SELECT
+                  ah.cust_id,
+                  ah.product_type,
+                  ah.account_no,
+                  date_trunc('months', eom_date)         AS dates_eom,
+                  count(ah.account_no::DOUBLE PRECISION) AS volume,
+                  sum(current_balance)                   AS value
+         FROM     accounts_history ah
+         WHERE    1 = 1
+         AND      eom_date::date IN
+                  (
+                         SELECT max_month_eod
+                         FROM   end_month_dates )
+         GROUP BY ah.product_type,
+                  ah.account_no,
+                  ah.cust_id,
+                  date_trunc('months', eom_date)
+         ORDER BY(date_trunc('months', eom_date)) )
+SELECT *
+FROM   daily_balance;
+
+
+select * from portfolio_cust_deposit_trends
+
+CREATE UNIQUE INDEX ON portfolio_cust_deposit_trends (
+   cust_id,
+   product_type,
+   account_no,
+   dates_eom,
+   volume,
+    value                                                 );
+
+
+REFRESH MATERIALIZED VIEW CONCURRENTLY portfolio_cust_deposit_trends;
+
+
+-- CREATE OR REPLACE FUNCTION refresh_portfolio_cust_deposit_trends_report()
+--   RETURNS TRIGGER LANGUAGE plpgsql
+--   AS $$
+--   BEGIN
+--   REFRESH MATERIALIZED VIEW CONCURRENTLY portfolio_cust_deposit_trends;
+--   RETURN NULL;
+--   END $$;
+--
+--
+-- drop TRIGGER portfolio_cust_deposit_trends_trigger on accounts_history
+--
+-- CREATE TRIGGER portfolio_cust_deposit_trends_trigger
+--   AFTER INSERT OR UPDATE OR DELETE --------OR TRUNCATE
+--   ON accounts_history
+--   FOR EACH STATEMENT
+--   EXECUTE PROCEDURE refresh_portfolio_cust_deposit_trends_report();
+--
+--
+-- drop TRIGGER portfolio_cust_deposit_trends_trigger on retail_allocated_portfolio
+--
+-- CREATE TRIGGER portfolio_cust_deposit_trends_trigger
+--   AFTER INSERT OR UPDATE OR DELETE ----------OR TRUNCATE
+--   ON retail_allocated_portfolio
+--   FOR EACH STATEMENT
+--   EXECUTE PROCEDURE refresh_portfolio_cust_deposit_trends_report();
+
+
+
+
+
+
+
+
+drop MATERIALIZED VIEW portfolio_rm_revenue
+
+
+CREATE MATERIALIZED VIEW portfolio_rm_revenue
+as
+select
+       rap.sales_code,
+       revenue.income_category,
+       SUM(sum_dc) AS value
+
+from revenue
+    left join retail_allocated_portfolio rap on revenue.cust_id = rap.cust_id
+  where 1=1
+    -----------and income_category = 'interest_income'
+    ----------AND rap.sales_code=%s
+group by rap.sales_code,
+       revenue.income_category;
+
+
+select * from portfolio_rm_revenue
+
+
+CREATE UNIQUE INDEX ON portfolio_rm_revenue (
+   sales_code,
+   income_category,
+    value                                                 );
+
+
+REFRESH MATERIALIZED VIEW CONCURRENTLY  portfolio_rm_revenue;
+
+
+
+-- CREATE OR REPLACE FUNCTION refresh_portfolio_rm_revenue_report()
+--   RETURNS TRIGGER LANGUAGE plpgsql
+--   AS $$
+--   BEGIN
+--   REFRESH MATERIALIZED VIEW CONCURRENTLY portfolio_rm_revenue;
+--   RETURN NULL;
+--   END $$;
+--
+--
+-- drop TRIGGER portfolio_rm_revenue_trigger on revenue
+-- CREATE TRIGGER portfolio_rm_revenue_trigger
+--   AFTER INSERT OR UPDATE OR DELETE --------OR TRUNCATE
+--   ON revenue
+--   FOR EACH STATEMENT
+--   EXECUTE PROCEDURE refresh_portfolio_rm_revenue_report();
+--
+--
+--
+-- drop TRIGGER portfolio_rm_revenue_trigger on retail_allocated_portfolio
+--
+--
+-- CREATE TRIGGER portfolio_rm_revenue_trigger
+--   AFTER INSERT OR UPDATE OR DELETE ----------OR TRUNCATE
+--   ON retail_allocated_portfolio
+--   FOR EACH STATEMENT
+--   EXECUTE PROCEDURE refresh_portfolio_rm_revenue_report();
+
+
+--
+-- CREATE UNIQUE INDEX ON ceo_deposit_movement_daily (id);
+--
+--
+-- select max(datecreated) from transaction_diary
+
+
+
+
+
+
+
+####################################################################################################3
+
+--------------ceo_deposit_movement
+CREATE MATERIALIZED VIEW ceo_deposit_movement
+as
+  with daily_balance as (select 1 id,
+            case when segment
+                    in ('LARGE ENTERPRISES','MEDIUM ENTERPRISES','SMALL ENTERPRISES') then 'SME'
+            when segment
+                    in ('MASS','PRIVATE','STANDARD','VIRTUAL') then 'PB'
+            when segment
+                    in ('INSTITUTIONAL BANKING') then 'IB'
+            when segment
+                    in ('SCHEME') then 'SCHEME'
+            when segment
+                    in ('FINANCIAL INSTITUTIONS') then 'FI'
+            else 'Other'
+            end as banking_segment,
+            segment,
+            eom_date::date as dates,
+    count(ah.account_no::double precision) as volume,
+    sum(current_balance) as value
+    from accounts_history ah
+            left join customers c on ah.cust_id = c.cust_id
+            where 1=1
+            and eom_date::date in ((select max(eom_date)::date from accounts_history), (date_trunc('year', now()) - INTERVAL '1 day')::timestamp::date)
+            and segment != 'internal'
+            group by
+            case when segment
+                            in ('LARGE ENTERPRISES','MEDIUM ENTERPRISES','SMALL ENTERPRISES') then 'SME'
+                    when segment
+                            in ('MASS','PRIVATE','STANDARD','VIRTUAL') then 'PB'
+                    when segment
+                            in ('INSTITUTIONAL BANKING') then 'IB'
+                    when segment
+                            in ('SCHEME') then 'SCHEME'
+                    when segment
+                            in ('FINANCIAL INSTITUTIONS') then 'FI'
+                    else 'Other'
+                    end,
+                    segment,
+                    eom_date::date)
+    select 1 id,banking_segment,
+            segment,
+            sum(case when dates::date = (date_trunc('year', now()) - INTERVAL '1 day')::timestamp::date then value WHEN dates::date = (date_trunc('year', now()) - INTERVAL '2 day')::timestamp::date THEN VALUE end) as end_previous_year_bal,
+            sum(case when dates::date >= date_trunc('year', now())::timestamp::date then value end) as current_bal,
+            100*((sum(case when dates::date >= date_trunc('year', now())::timestamp::date then value end)-sum(case when dates::date <= (date_trunc('year', now()) - INTERVAL '1 day')::timestamp::date then value end))/sum(case when dates::date <= (date_trunc('year', now()) - INTERVAL '1 day')::timestamp::date then value end))::double precision   as percentage_movement
+    from daily_balance
+    group by banking_segment,segment;
+
+select * from ceo_deposit_movement
+
+CREATE OR REPLACE FUNCTION refresh_ceo_deposit_movement()
+  RETURNS TRIGGER LANGUAGE plpgsql
+  AS $$
+  BEGIN
+  REFRESH MATERIALIZED VIEW CONCURRENTLY ceo_deposit_movement;
+  RETURN NULL;
+  END $$;
+
+CREATE TRIGGER ceo_deposit_movement_trigger
+  AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
+  ON accounts_history
+  FOR EACH STATEMENT
+  EXECUTE PROCEDURE refresh_ceo_deposit_movement();
+
+  CREATE TRIGGER ceo_deposit_movement_trigger
+  AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
+  ON customers
+  FOR EACH STATEMENT
+  EXECUTE PROCEDURE refresh_ceo_deposit_movement();
+
+
+
+---------------ceo_deposit_movement_monthly
+
+CREATE MATERIALIZED VIEW ceo_deposit_movement_monthly
+as
+  with end_month_dates as
+        (
+        SELECT
+            date_trunc('month', eom_date)::date,
+            max(eom_date)::date as max_month_eod
+        FROM
+            accounts_history
+        WHERE
+            eom_date >= date_trunc('month', CURRENT_DATE - '12 months'::interval)
+            and eom_date >= '2021-01-01'
+        GROUP BY
+            date_trunc('month', eom_date)
+        )
+        ,
+        daily_balance as
+        (
+        select 1 id,
+        ah.product_type,
+        ah.account_no,
+                c.segment,
+                upper(replace(trim(edd.sales_code), ' ', '')) as sales_code,
+                edd.staff_role,
+                date_trunc('months', eom_date) as dates_eom,
+                count(ah.account_no::double precision) as volume,
+                sum(current_balance) as value
+        from
+            accounts_history ah left join customers c on ah.cust_id = c.cust_id
+            left join
+                empoyee_dmc_data edd
+                on upper(replace(trim(ah.opened_by), ' ', '')) = upper(replace(trim(edd.sales_code), ' ', ''))
+        where
+            1 = 1
+            and eom_date::date in
+            (
+                select
+                    max_month_eod
+                from
+                    end_month_dates
+            )
+        and c.segment not in ('INTERNAL ACCOUNTS')
+        group by
+            ah.product_type,
+            ah.account_no,
+                    c.segment,
+                    upper(replace(trim(edd.sales_code), ' ', '')),
+                    edd.staff_role, date_trunc('months', eom_date)
+        )
+        select 1 id,
+        dates_eom::date,
+        sum(value)
+        from
+        daily_balance
+        group by dates_eom::date
+        order by dates_eom::date asc;
+
+select * from ceo_deposit_movement_monthly
+
+CREATE OR REPLACE FUNCTION refresh_ceo_deposit_movement_monthly()
+  RETURNS TRIGGER LANGUAGE plpgsql
+  AS $$
+  BEGIN
+  REFRESH MATERIALIZED VIEW CONCURRENTLY ceo_deposit_movement_monthly;
+  RETURN NULL;
+  END $$;
+
+CREATE TRIGGER ceo_deposit_movement_monthly_trigger
+  AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
+  ON accounts_history
+  FOR EACH STATEMENT
+  EXECUTE PROCEDURE refresh_ceo_deposit_movement_monthly();
+
+  CREATE TRIGGER ceo_deposit_movement_monthly_trigger
+  AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
+  ON customers
+  FOR EACH STATEMENT
+  EXECUTE PROCEDURE refresh_ceo_deposit_movement_monthly();
+
+  CREATE TRIGGER ceo_deposit_movement_monthly_trigger
+  AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
+  ON empoyee_dmc_data
+  FOR EACH STATEMENT
+  EXECUTE PROCEDURE refresh_ceo_deposit_movement_monthly();
+
+
+-------deposit movement daily
+
+CREATE MATERIALIZED VIEW ceo_deposit_movement_daily
+as
+  with end_month_dates as
+        (
+        SELECT
+            date_trunc('days', eom_date)::date,
+            max(eom_date)::date as max_month_eod
+        FROM
+            accounts_history
+        WHERE
+            eom_date >= date_trunc('days', CURRENT_DATE - '7 days'::interval)
+            and eom_date >= '2021-01-01'
+        GROUP BY
+            date_trunc('days', eom_date)
+        )
+        ,
+        daily_balance as
+        (
+        select
+        ah.product_type,
+        ah.account_no,
+                c.segment,
+                date_trunc('days', eom_date) as dates_eom,
+                count(ah.account_no::double precision) as volume,
+                sum(current_balance) as value
+        from
+            accounts_history ah
+                left join customers c on ah.cust_id = c.cust_id
+        where
+            1 = 1
+            and eom_date::date in
+            (
+                select
+                    max_month_eod
+                from
+                    end_month_dates
+            )
+        and c.segment not in ('INTERNAL ACCOUNTS')
+        group by
+            ah.product_type,
+        ah.account_no,
+                c.segment,
+                date_trunc('days', eom_date)
+        )
+        select 1 id,
+        dates_eom::date,
+        sum(value)
+        from
+        daily_balance
+        group by dates_eom::date
+        order by dates_eom::date asc;
+
+select * from ceo_deposit_movement_daily
+
+CREATE OR REPLACE FUNCTION refresh_ceo_deposit_movement_daily()
+  RETURNS TRIGGER LANGUAGE plpgsql
+  AS $$
+  BEGIN
+  REFRESH MATERIALIZED VIEW CONCURRENTLY ceo_deposit_movement_daily;
+  RETURN NULL;
+  END $$;
+
+CREATE TRIGGER ceo_deposit_movement_daily_trigger
+  AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
+  ON accounts_history
+  FOR EACH STATEMENT
+  EXECUTE PROCEDURE refresh_ceo_deposit_movement_daily();
+
+  CREATE TRIGGER ceo_deposit_movement_daily_trigger
+  AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
+  ON customers
+  FOR EACH STATEMENT
+  EXECUTE PROCEDURE refresh_ceo_deposit_movement_daily();
+
+
+
+
+-------ceo_channel_report
+
+CREATE MATERIALIZED VIEW ceo_channel_report
+as
+  with revenue as (select 1 id,
+    c.cust_id,
+    t.id_product,
+    trx_unit,
+    product_description,
+    date_trunc('months', tmstamp) as trx_date,
+    case
+        when
+            justific_name in
+            (
+                'CASH DEPOSIT FROM ATM',
+                'ATM WITHDRAWAL (HF TERMINAL)',
+                'ATM CARD FEES',
+                'ATM WITHDRAWAL ONUS KENSWITCH',
+                'ATM WITHDR OFFUS KENSWITCH',
+                'ATM WITHDR OFFUS MASTERCARD',
+                'ATM CASH DEPOSIT'
+            )
+        then
+            'ATM'
+        when
+            justific_name in
+            (
+                '0', 'CHEQUE DEPOSIT OF OTHER BANK (ELEC.CLER)', 'IN HOUSE CHEQUES', 'DEPOSIT CASH', 'CASH WITHDRAWAL', 'CHEQUE PAYMENT FROM CARNET', 'ORDINARY CLEARING CHEQUE', 'CHEQUE BOOK CHARGE 50 PAGES', 'CHEQUE BOOK CHARGE 100 PAGES', 'Piggy Bank Replacement', 'Confirmation To Embassies', 'Audit Confirmation', 'Bank Reference/Opinion', 'CHEQUE DEPOSIT OF OTHER BANK FC', 'OTC CASH WITHDRAWAL', 'ACCOUNT CLOSING AFTER 6 MONTHS', 'INTERIM STATEMENT PER PG', 'CERTIFICATION OF STMT PER PG', 'COUNTER CHEQUE WITHDRAWAL', 'DUPLICATE STATEMENT PER PG', 'CHEQUE STOP PAYMENT', 'BANK DRAFT ISSUED', 'RTGS -PAYMENT', 'TELEGRAPHIC TRANSFER', 'CONTRACT FINANCING', 'SECURED OVERDRAFTS (SOD)', 'NORMAL INSPECTION FEES-PROJECTS', 'BANK DRAFT ISSUED /NON ACC.HOLDER', 'BANK DRAFT ISSUED /ACC. HOLDER', 'BANK DRAFT ISSUED /STAFF', 'BILL COMMISSION', 'REACTIVATION ACCOUNT CHARGES (DORMANT)', 'STANDING ORDER DEACTIVATION FEE', 'CASH WITHDRAWAL LENGO FOR CLOSING', 'A/C CLOSURE-JOURNAL TRANSFER WITH COMM', 'retrieval of documents -vouchers', 'Duplicate Statement (before Bankplus)', 'DOMESTIC FCY CHEQUES VALUE 7days', 'Effects not cleared (withdr from unclear', 'Retrieval of documents Archives', 'STAGE INSPECTION FEES-RETAIL', 'CLOSED AC BELOW 5Y PER PG'
+            )
+        THEN
+            'BRANCH'
+        when
+            justific_name in
+            (
+                'DEBIT FROM MOBILE BANKING', 'CREDIT FROM MOBILE BANKING', 'CR FROM MOBILE BANKING-MPESA TO ACC', 'BUY GOOD( MOBILE APP)', 'PAY BILL(ACCOUNT TO MPESA PAYBILL)', 'AIRTIME PURCHASE( MOBILE APP)', 'ACCOUNT TO MPESA(B2C)', 'UTILITY BILL PAYMENT(APP)', 'CR UTILITY BILLPAYMENT(APP)', 'CR AIRTIME PURCHASE(APP)', 'CR PAYBILL(ACCOUNT TO MPESA PAYBILL)', 'CR BUY GOODS (APP)', 'MOBILE APP DEPOSIT', 'MPESA CR WHIZZPAY', 'MPESA DR WHIZZPAY', 'DEPOSIT THROUGH TILL', 'DR THROUGH TILL'
+            )
+        THEN
+            'DIGITAL'
+        when
+            justific_name in
+            (
+                '0', 'REJECTION INCOM.CHEQUES NO COMMIS', 'UNPAID CHEQUE OUR BANK', 'COMMISSION ON UNPAID CHEQUE', 'EXPENSE FOR OVERDUE COLLATERAL', 'CLOSURE ZERO BALANCE', 'JOURNAL CREDIT', 'JC-CREDIT TO ACCOUNT', 'SALARY PAYMENT', 'JOURNAL DEBIT', 'JD-TRANSFER TO ACCOUNT', 'CUSTOMER ACCOUNT DEBIT', 'STANDING ORDER PAYMENT', 'INCOMING INTERPAYMENT ORDERS CHARGES ', 'TRADE FINANCE EXPENSE JOURNAL DEBIT', 'FIRST DEMAND INTEREST CALCULATION UPDATE', 'DEBIT INTEREST', 'INTEREST PAYMENT ', 'PRINCIPAL PAYMENT ', 'Search Fees', 'Interim Statement- e-mail', 'WITHDRAW FROM UNCLEAR BALANCE', 'ACCOUNT MAINTENANCE', 'SALARY POSTINGS WITH COMMISSION', 'STANDING ORDER FINALIS. FEES', 'FX LOAN MULTI PAYMENTS', 'STANDING ORDER UNSUCCES.FEES', 'INSURANCE DEBIT', 'INTERNATIONAL FCY CHEQUESVALUE 30days', 'STAFF IMPREST', 'STAFF IMPREST JC', 'PETTY CASH JC', 'INTEREST POSTING', 'VENDOR PAYMENT-JC', 'SALARY POSTINGS COMMISSION 50 KSH', 'SALARY POSTINGS COMMISSION 100 KSH', 'PENALTY ON CHEQUE TRANSACTIONS ABOVE 10', 'SALARY POSTINGS RETURN REJECTED AMOUNTS', 'Processing Fee  ', 'ONLINE STATEMENT CHARGE PER PAGE', 'BATCH STATEMENT FEE CHARGING - LOANS', 'COMMITTMENT FEE MORTGAGE FINANCE', 'LOAN STATEMENT FEE', 'LOAN DRAWDOWN', 'COMMISSION WITH TAX', 'CLOSURE ZERO BALANCE REVERSED ACCRUALS', 'CHATTELS MORTGAGE FEES', 'PERSONAL BANKING COMMITTMENT FEES', 'BUSINESS BANKING COMMITMENT FEES', 'ECOMMERCE/ONLINE TRANSACTION', 'INCOMING RTGS CR', 'INCOMING RTGS DB', 'Postage fee- Local', 'Revenue Stamp', 'VENDOR PAYMENT-JD', 'UNDERTAKING FEE REDEMPTION', 'BALANCE INQUIRY EXT CHANNEL CHARGES', 'MINI STMNT EXT CHANNEL CHARGES', 'PETTY CASH JD', 'BATCH STATEMENT CHARGE/PAGE-EMAIL', 'ACCOUNT CLOSING BEFORE 6 MONTHS', 'MICRO BANKING COMMITTMENT FEE', 'COMMIS. OF INCOM.CHEQUES INSUF.BAL.'
+            )
+        THEN
+            'SYSTEM'
+        else
+            'others'
+    end
+    as trx_channel,
+    case
+        when
+            justific_name in
+            (
+                'DEPOSIT THROUGH TILL', 'DR THROUGH TILL'
+            )
+        THEN
+            'SME'
+        when
+            c.segment in
+            (
+                'MASS', 'STANDARD', 'PRIVATE', 'VIRTUAL'
+            )
+        THEN
+            'PERSONAL BANKING'
+        when
+            c.segment in
+            (
+                'MEDIUM ENTERPRISES', 'SMALL ENTERPRISES', 'LARGE ENTERPRISES'
+            )
+        THEN
+            'SME'
+        when
+            c.segment in
+            (
+                'PROJECT FINANCE'
+            )
+        THEN
+            'PROJECT FINANCE'
+        when
+            c.segment in
+            (
+                'INTERNAL ACCOUNTS'
+            )
+        THEN
+            'INTERNAL ACCOUNTS'
+        when
+            c.segment in
+            (
+                'INSTITUTIONAL BANKING'
+            )
+        THEN
+            'INSTITUTIONAL BANKING'
+        ELSE
+            'PERSONAL BANKING'
+    END
+    as banking_segment, justific_name, count(distinct transaction_ref) as trx_count, sum(t.journal_debit + t.jornal_credit) as trx_sum, count(distinct transaction_ref) FILTER (
+    WHERE
+    commission > 0) count_billed, sum(
+    case
+        when
+            commission > 0
+        then
+    (commission)
+        else
+            0
+    end
+    ) as revenues
+    from
+    customers c
+    left join
+        transaction_diary t
+        on t.fk_customercust_id = c.cust_id
+    where
+    1 = 1
+    AND t.tmstamp::timestamp::date >= '2021-01-01'::timestamp::date
+    AND chanel_description is not null
+    AND value_date is not null
+    AND account_number is not null
+    AND product_description is not null
+    AND reversed_trx_flag = 'Posted'
+    and reverse_flag = 'Original'
+    AND justific_name in
+    (
+        'A/C CLOSURE-JOURNAL TRANSFER WITH COMM', 'ACCOUNT CLOSING AFTER 6 MONTHS', 'ACCOUNT CLOSING BEFORE 6 MONTHS', 'ACCOUNT MAINTENANCE', 'ACCOUNT TO MPESA(B2C)', 'AIRTIME PURCHASE( MOBILE APP)', 'ATM CARD FEES', 'ATM WITHDRAWAL (HF TERMINAL)', 'ATM WITHDRAWAL ONUS KENSWITCH', 'ATM WITHDR OFFUS KENSWITCH', 'ATM WITHDR OFFUS MASTERCARD', 'BALANCE INQUIRY EXT CHANNEL CHARGES', 'BATCH STATEMENT CHARGE/PAGE-EMAIL', 'BILL COMMISSION', 'BUY GOOD( MOBILE APP)', 'CASH WITHDRAWAL', 'CHEQUE BOOK CHARGE 100 PAGES', 'CHEQUE BOOK CHARGE 50 PAGES', 'CLOSED AC BELOW 5Y PER PG', 'COUNTER CHEQUE WITHDRAWAL', 'CR FROM MOBILE BANKING-MPESA TO ACC', 'DEBT COLLECTION COMMISSION', 'DEPOSIT CASH', 'Effects not cleared (withdr from unclear', 'EXPENSE FOR OVERDUE COLLATERAL', 'Interim Statement- e-mail', 'INTERIM STATEMENT PER PG', 'LOAN AUCTIONEERS FEE', 'LOAN LEGAL FEE', 'LOAN STATEMENT FEE', 'MANAGEMENT COMMISSION', 'MESSAGING AND ALERTING CHARGES', 'MINI STMNT EXT CHANNEL CHARGES', 'MOBILE PENALTY FEES', 'MOBILE ROLL OVER FEES', 'ONLINE STATEMENT CHARGE PER PAGE', 'OTC CASH WITHDRAWAL', 'PAY BILL(ACCOUNT TO MPESA PAYBILL)', 'REACTIVATION ACCOUNT CHARGES (DORMANT)', 'REJECTION INCOM.CHEQUES NO COMMIS', 'Retrieval of documents Archives', 'Revenue Stamp', 'SALARY POSTINGS COMMISSION 100 KSH', 'SALARY POSTINGS COMMISSION 50 KSH', 'SALARY POSTINGS WITH COMMISSION', 'SDB - JOURNAL CREDIT - EXPENSE', 'SDB RENTAL RENEWAL CASH', 'Standing Order Payment', 'UTILITY BILL PAYMENT(APP)', 'VALUATION FEES', 'WITHDRAW FROM UNCLEAR BALANCE', 'DEPOSIT THROUGH TILL', 'DR THROUGH TILL'
+    )
+    group by
+    case
+        when
+            justific_name in
+            (
+                'CASH DEPOSIT FROM ATM', 'ATM WITHDRAWAL (HF TERMINAL)', 'ATM CARD FEES', 'ATM WITHDRAWAL ONUS KENSWITCH', 'ATM WITHDR OFFUS KENSWITCH', 'ATM WITHDR OFFUS MASTERCARD', 'ATM CASH DEPOSIT'
+            )
+        then
+            'ATM'
+        when
+            justific_name in
+            (
+                '0', 'CHEQUE DEPOSIT OF OTHER BANK (ELEC.CLER)', 'IN HOUSE CHEQUES', 'DEPOSIT CASH', 'CASH WITHDRAWAL', 'CHEQUE PAYMENT FROM CARNET', 'ORDINARY CLEARING CHEQUE', 'CHEQUE BOOK CHARGE 50 PAGES', 'CHEQUE BOOK CHARGE 100 PAGES', 'Piggy Bank Replacement', 'Confirmation To Embassies', 'Audit Confirmation', 'Bank Reference/Opinion', 'CHEQUE DEPOSIT OF OTHER BANK FC', 'OTC CASH WITHDRAWAL', 'ACCOUNT CLOSING AFTER 6 MONTHS', 'INTERIM STATEMENT PER PG', 'CERTIFICATION OF STMT PER PG', 'COUNTER CHEQUE WITHDRAWAL', 'DUPLICATE STATEMENT PER PG', 'CHEQUE STOP PAYMENT', 'BANK DRAFT ISSUED', 'RTGS -PAYMENT', 'TELEGRAPHIC TRANSFER', 'CONTRACT FINANCING', 'SECURED OVERDRAFTS (SOD)', 'NORMAL INSPECTION FEES-PROJECTS', 'BANK DRAFT ISSUED /NON ACC.HOLDER', 'BANK DRAFT ISSUED /ACC. HOLDER', 'BANK DRAFT ISSUED /STAFF', 'BILL COMMISSION', 'REACTIVATION ACCOUNT CHARGES (DORMANT)', 'STANDING ORDER DEACTIVATION FEE', 'CASH WITHDRAWAL LENGO FOR CLOSING', 'A/C CLOSURE-JOURNAL TRANSFER WITH COMM', 'retrieval of documents -vouchers', 'Duplicate Statement (before Bankplus)', 'DOMESTIC FCY CHEQUES VALUE 7days', 'Effects not cleared (withdr from unclear', 'Retrieval of documents Archives', 'STAGE INSPECTION FEES-RETAIL', 'CLOSED AC BELOW 5Y PER PG'
+            )
+        THEN
+            'BRANCH'
+        when
+            justific_name in
+            (
+                'DEBIT FROM MOBILE BANKING', 'CREDIT FROM MOBILE BANKING', 'CR FROM MOBILE BANKING-MPESA TO ACC', 'BUY GOOD( MOBILE APP)', 'PAY BILL(ACCOUNT TO MPESA PAYBILL)', 'AIRTIME PURCHASE( MOBILE APP)', 'ACCOUNT TO MPESA(B2C)', 'UTILITY BILL PAYMENT(APP)', 'CR UTILITY BILLPAYMENT(APP)', 'CR AIRTIME PURCHASE(APP)', 'CR PAYBILL(ACCOUNT TO MPESA PAYBILL)', 'CR BUY GOODS (APP)', 'MOBILE APP DEPOSIT', 'MPESA CR WHIZZPAY', 'MPESA DR WHIZZPAY', 'DEPOSIT THROUGH TILL', 'DR THROUGH TILL'
+            )
+        THEN
+            'DIGITAL'
+        when
+            justific_name in
+            (
+                '0', 'REJECTION INCOM.CHEQUES NO COMMIS', 'UNPAID CHEQUE OUR BANK', 'COMMISSION ON UNPAID CHEQUE', 'EXPENSE FOR OVERDUE COLLATERAL', 'CLOSURE ZERO BALANCE', 'JOURNAL CREDIT', 'JC-CREDIT TO ACCOUNT', 'SALARY PAYMENT', 'JOURNAL DEBIT', 'JD-TRANSFER TO ACCOUNT', 'CUSTOMER ACCOUNT DEBIT', 'STANDING ORDER PAYMENT', 'INCOMING INTERPAYMENT ORDERS CHARGES ', 'TRADE FINANCE EXPENSE JOURNAL DEBIT', 'FIRST DEMAND INTEREST CALCULATION UPDATE', 'DEBIT INTEREST', 'INTEREST PAYMENT ', 'PRINCIPAL PAYMENT ', 'Search Fees', 'Interim Statement- e-mail', 'WITHDRAW FROM UNCLEAR BALANCE', 'ACCOUNT MAINTENANCE', 'SALARY POSTINGS WITH COMMISSION', 'STANDING ORDER FINALIS. FEES', 'FX LOAN MULTI PAYMENTS', 'STANDING ORDER UNSUCCES.FEES', 'INSURANCE DEBIT', 'INTERNATIONAL FCY CHEQUESVALUE 30days', 'STAFF IMPREST', 'STAFF IMPREST JC', 'PETTY CASH JC', 'INTEREST POSTING', 'VENDOR PAYMENT-JC', 'SALARY POSTINGS COMMISSION 50 KSH', 'SALARY POSTINGS COMMISSION 100 KSH', 'PENALTY ON CHEQUE TRANSACTIONS ABOVE 10', 'SALARY POSTINGS RETURN REJECTED AMOUNTS', 'Processing Fee  ', 'ONLINE STATEMENT CHARGE PER PAGE', 'BATCH STATEMENT FEE CHARGING - LOANS', 'COMMITTMENT FEE MORTGAGE FINANCE', 'LOAN STATEMENT FEE', 'LOAN DRAWDOWN', 'COMMISSION WITH TAX', 'CLOSURE ZERO BALANCE REVERSED ACCRUALS', 'CHATTELS MORTGAGE FEES', 'PERSONAL BANKING COMMITTMENT FEES', 'BUSINESS BANKING COMMITMENT FEES', 'ECOMMERCE/ONLINE TRANSACTION', 'INCOMING RTGS CR', 'INCOMING RTGS DB', 'Postage fee- Local', 'Revenue Stamp', 'VENDOR PAYMENT-JD', 'UNDERTAKING FEE REDEMPTION', 'BALANCE INQUIRY EXT CHANNEL CHARGES', 'MINI STMNT EXT CHANNEL CHARGES', 'PETTY CASH JD', 'BATCH STATEMENT CHARGE/PAGE-EMAIL', 'ACCOUNT CLOSING BEFORE 6 MONTHS', 'MICRO BANKING COMMITTMENT FEE', 'COMMIS. OF INCOM.CHEQUES INSUF.BAL.'
+            )
+        THEN
+            'SYSTEM'
+        else
+            'others'
+    end
+    ,
+    case
+        when
+            justific_name in
+            (
+                'DEPOSIT THROUGH TILL', 'DR THROUGH TILL'
+            )
+        THEN
+            'SME'
+        when
+            c.segment in
+            (
+                'MASS', 'STANDARD', 'PRIVATE', 'VIRTUAL'
+            )
+        THEN
+            'PERSONAL BANKING'
+        when
+            c.segment in
+            (
+                'MEDIUM ENTERPRISES', 'SMALL ENTERPRISES', 'LARGE ENTERPRISES'
+            )
+        THEN
+            'SME'
+        when
+            c.segment in
+            (
+                'PROJECT FINANCE'
+            )
+        THEN
+            'PROJECT FINANCE'
+        when
+            c.segment in
+            (
+                'INTERNAL ACCOUNTS'
+            )
+        THEN
+            'INTERNAL ACCOUNTS'
+        when
+            c.segment in
+            (
+                'INSTITUTIONAL BANKING'
+            )
+        THEN
+            'INSTITUTIONAL BANKING'
+        ELSE
+            'PERSONAL BANKING'
+    END
+    , justific_name, product_description,trx_unit,c.cust_id,t.id_product,date_trunc('months', tmstamp))
+    select 1 id, trx_date,
+      trx_channel,
+      count(distinct cust_id) as cust_id
+    from revenue
+    group by trx_date,
+      trx_channel;
+
+select * from ceo_channel_report
+
+CREATE OR REPLACE FUNCTION refresh_ceo_channel_report()
+  RETURNS TRIGGER LANGUAGE plpgsql
+  AS $$
+  BEGIN
+  REFRESH MATERIALIZED VIEW CONCURRENTLY ceo_channel_report;
+  RETURN NULL;
+  END $$;
+
+CREATE TRIGGER ceo_channel_report_trigger
+  AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
+  ON transaction_diary
+  FOR EACH STATEMENT
+  EXECUTE PROCEDURE refresh_ceo_channel_report();
+
+
+
+
+-----drop trigger if exists ceo_channel_report_trigger on customers ;
+
+-----------portfolio_rm_deposit_trends
+
+drop MATERIALIZED VIEW portfolio_rm_deposit_trends
+
+
+CREATE MATERIALIZED VIEW portfolio_rm_deposit_trends
+as
+WITH end_month_dates AS
+(
+         SELECT   Date_trunc('month', eom_date)::        DATE,
+                  Max(eom_date)::                DATE AS max_month_eod
+         FROM     accounts_history
+         WHERE    eom_date >= Date_trunc('month', current_date - '12 months'::interval)
+         AND      eom_date >= '2021-01-01'
+         GROUP BY Date_trunc('month', eom_date) ) , daily_balance AS
+(
+         SELECT   1 id,
+                  ah.product_type,
+                  rap.sales_code,
+                  Date_trunc('months', eom_date)         AS dates_eom,
+                  count(ah.account_no::DOUBLE precision) AS volume,
+                  count(distinct ah.cust_id) as number_of_customers,
+                  SUM(current_balance)                   AS value
+         FROM     accounts_history ah
+         LEFT JOIN retail_allocated_portfolio rap on ah.cust_id = rap.cust_id
+         WHERE    1 = 1
+         AND      eom_date::DATE IN
+                  (
+                         SELECT max_month_eod
+                         FROM   end_month_dates )
+         GROUP BY ah.product_type,
+                  rap.sales_code,
+                  date_trunc('months', eom_date)
+         ORDER BY(date_trunc('months', eom_date)) )
+SELECT *
+FROM   daily_balance;
+
+SELECT 1 id, Date_trunc('month', dates_eom) AS dates_eom,
+       SUM(value)                     AS value
+FROM   portfolio_rm_deposit_trends
+-----WHERE  sales_code = %s
+GROUP  BY Date_trunc('month', dates_eom)
+
+CREATE OR REPLACE FUNCTION refresh_portfolio_rm_deposit_trends_report()
+  RETURNS TRIGGER LANGUAGE plpgsql
+  AS $$
+  BEGIN
+  REFRESH MATERIALIZED VIEW CONCURRENTLY portfolio_rm_deposit_trends;
+  RETURN NULL;
+  END $$;
+
+CREATE TRIGGER portfolio_rm_deposit_trends_trigger
+  AFTER INSERT OR UPDATE OR DELETE --------OR TRUNCATE
+  ON accounts_history
+  FOR EACH STATEMENT
+  EXECUTE PROCEDURE refresh_portfolio_rm_deposit_trends_report();
+
+
+CREATE TRIGGER portfolio_rm_deposit_trends_trigger
+  AFTER INSERT OR UPDATE OR DELETE ----------OR TRUNCATE
+  ON retail_allocated_portfolio
+  FOR EACH STATEMENT
+  EXECUTE PROCEDURE refresh_portfolio_rm_deposit_trends_report();
+
+
+
+
+
+-----------
+
+
+
+-----------portfolio_rm_deposit_trends
+
+
+
+
+CREATE MATERIALIZED VIEW portfolio_cust_deposit_trends
+as
+WITH end_month_dates AS
+(
+         SELECT   Date_trunc('month', eom_date)::        date,
+                  max(eom_date)::                date AS max_month_eod
+         FROM     accounts_history
+         WHERE    eom_date >= date_trunc('month', CURRENT_DATE - '12 months'::interval)
+         AND      eom_date >= '2021-01-01'
+         GROUP BY date_trunc('month', eom_date) ) , daily_balance AS
+(
+         SELECT   1 id,
+                  ah.cust_id,
+                  ah.product_type,
+                  ah.account_no,
+                  date_trunc('months', eom_date)         AS dates_eom,
+                  count(ah.account_no::DOUBLE PRECISION) AS volume,
+                  sum(current_balance)                   AS value
+         FROM     accounts_history ah
+         WHERE    1 = 1
+         AND      eom_date::date IN
+                  (
+                         SELECT max_month_eod
+                         FROM   end_month_dates )
+         GROUP BY ah.product_type,
+                  ah.account_no,
+                  ah.cust_id,
+                  date_trunc('months', eom_date)
+         ORDER BY(date_trunc('months', eom_date)) )
+SELECT *
+FROM   daily_balance;
+
+
+
+CREATE OR REPLACE FUNCTION refresh_portfolio_cust_deposit_trends_report()
+  RETURNS TRIGGER LANGUAGE plpgsql
+  AS $$
+  BEGIN
+  REFRESH MATERIALIZED VIEW CONCURRENTLY portfolio_cust_deposit_trends;
+  RETURN NULL;
+  END $$;
+
+CREATE TRIGGER portfolio_cust_deposit_trends_trigger
+  AFTER INSERT OR UPDATE OR DELETE --------OR TRUNCATE
+  ON accounts_history
+  FOR EACH STATEMENT
+  EXECUTE PROCEDURE refresh_portfolio_cust_deposit_trends_report();
+
+
+CREATE TRIGGER portfolio_cust_deposit_trends_trigger
+  AFTER INSERT OR UPDATE OR DELETE ----------OR TRUNCATE
+  ON retail_allocated_portfolio
+  FOR EACH STATEMENT
+  EXECUTE PROCEDURE refresh_portfolio_cust_deposit_trends_report();
+
+
+
+
+
+
+
+
+
+
+
+CREATE MATERIALIZED VIEW portfolio_rm_revenue
+as
+select 1 id,
+       rap.sales_code,
+       revenue.income_category,
+       SUM(sum_dc) AS value
+
+from revenue
+    left join retail_allocated_portfolio rap on revenue.cust_id = rap.cust_id
+  where 1=1
+    -----------and income_category = 'interest_income'
+    ----------AND rap.sales_code=%s
+group by rap.sales_code,
+       revenue.income_category;
+
+
+select * from portfolio_rm_revenue
+CREATE OR REPLACE FUNCTION refresh_portfolio_rm_revenue_report()
+  RETURNS TRIGGER LANGUAGE plpgsql
+  AS $$
+  BEGIN
+  REFRESH MATERIALIZED VIEW CONCURRENTLY portfolio_rm_revenue;
+  RETURN NULL;
+  END $$;
+
+CREATE TRIGGER portfolio_rm_revenue_trigger
+  AFTER INSERT OR UPDATE OR DELETE --------OR TRUNCATE
+  ON revenue
+  FOR EACH STATEMENT
+  EXECUTE PROCEDURE refresh_portfolio_rm_revenue_report();
+
+
+CREATE TRIGGER portfolio_rm_revenue_trigger
+  AFTER INSERT OR UPDATE OR DELETE ----------OR TRUNCATE
+  ON retail_allocated_portfolio
+  FOR EACH STATEMENT
+  EXECUTE PROCEDURE refresh_portfolio_rm_revenue_report();
+
+
+
+
+
+  CREATE UNIQUE INDEX ON ceo_deposit_movement_daily (id);
+
+
+
+-- drop MATERIALIZED VIEW loans_movement_monthly_by_cust
+
+CREATE MATERIALIZED VIEW loans_movement_monthly_by_cust
+as
+  with end_month_dates as
+        (
+        SELECT
+            date_trunc('month', eom_date)::date,
+            max(eom_date)::date as max_month_eod
+        FROM
+            loans_history
+        WHERE
+            eom_date >= date_trunc('month', CURRENT_DATE - '12 months'::interval)
+            and date_trunc('year',eom_date)>= date_trunc('year', now())
+        GROUP BY
+            date_trunc('month', eom_date)
+        )
+        ,
+        loan_balance as
+        (
+        select
+        lh.cust_id,
+        lh.loan_account_no,
+                c.segment,
+                rap.sales_code,
+                date_trunc('months', eom_date) as dates_eom,
+                count(lh.loan_account_no::double precision) as volume,
+                sum(lh.euro_book_balance) as value
+        from
+            loans_history lh left join customers c on lh.cust_id = c.cust_id
+            left join
+                retail_allocated_portfolio rap on c.cust_id = rap.cust_id
+        where
+            1 = 1
+            and eom_date::date in
+            (
+                select
+                    max_month_eod
+                from
+                    end_month_dates
+            )
+        and c.segment not in ('INTERNAL ACCOUNTS')
+        group by
+            lh.cust_id,
+        lh.loan_account_no,
+                c.segment,
+                rap.sales_code,
+                  date_trunc('months', eom_date))
+            select
+        *
+        from
+        loan_balance
+        where volume=1
+        order by dates_eom::date asc;
+
+
+
+
+
+select * from loans_movement_monthly_by_cust
+
+
+
+CREATE UNIQUE INDEX ON loans_movement_monthly_by_cust (
+   dates_eom,
+   cust_id,
+    loan_account_no
+                                                      );
+
+
+REFRESH MATERIALIZED VIEW CONCURRENTLY loans_movement_monthly_by_cust;
